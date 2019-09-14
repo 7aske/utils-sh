@@ -38,14 +38,14 @@ y=$(( y - y_offset))
 # slight edit to move enable moving in only one direction
 # otherwise if no argument is supplied script remains the same
 # and cycles all screens
-if [ "$1" == "left" ]
+if [ "$1" = "left" ]
 then
     
     # Compute new X position
     new_x=$((x - display_width))
     # Compute new Y position
     new_y=$((y + display_height))
-elif [ "$1" == "right" ] || [ "$1" == "" ]
+elif [ "$1" = "right" ] || [ "$1" = "" ]
 then
     # Compute new X position
     new_x=$((x + display_width))
@@ -57,7 +57,7 @@ fi
 # We also respect the window's width here: moving a window off more than half its width won't happen.
 width=$(xdotool getwindowgeometry "$window_id" | awk '/Geometry:/ { print $2 }'|cut -d"x" -f1)
 if [ "$(( new_x + width / 2))" -gt "$screen_width" ]; then
-    if [ "$1" == "" ]
+    if [ "$1" = "" ]
     then
         new_x=$((new_x - screen_width))
     else
@@ -72,7 +72,7 @@ fi
 
 # Don't move off the left side.
 if [ "$new_x" -lt 0 ]; then
-    if [ "$1" == "" ]
+    if [ "$1" = "" ]
     then
         new_x=0
     else

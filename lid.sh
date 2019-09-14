@@ -1,5 +1,9 @@
-#!/usr/bin/sh
+#!/bin/sh
+
+if [ "$(id -u)" -ne 0 ]; then
+	echo "Run as root"; exit 1;
+fi
 
 if grep -q closed /proc/acpi/button/lid/LID0/state; then
-	sudo systemctl suspend
+	systemctl suspend
 fi
