@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mapfile -t options < hosts
+mapfile -t options < ~/Code/sh/utils-sh/hosts
 if [ "$?" -eq 1 ]; then
     echo "Could not read hosts file"
     exit 1
