@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+status="$(playerctl status)"
+
+
+if [ "$status" == "Playing" ]; then
+    printf "%s\n" "$(playerctl metadata xesam:title | cut -c -30)"
+else
+    echo ""
+fi
+
