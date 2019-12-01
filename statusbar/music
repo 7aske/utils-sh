@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
-
-status="$(playerctl status)"
+player="--player=spotify"
+status="$(playerctl $player status)"
 
 
 if [ "$status" == "Playing" ]; then
-    printf "%s\n" "$(playerctl metadata xesam:title | cut -c -30)"
+    printf "%s\n" "$(playerctl $player metadata title | cut -c -30)"
 else
     echo ""
 fi
