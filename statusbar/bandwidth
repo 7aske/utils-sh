@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+iface="$(ip link | grep -e BROADCAST | awk '{print $2}' | cut -d ':' -f1)"
+
+rx1="$(cat /sys/class/net/$iface/statistics/rx_bytes)"
+tx1="$(cat /sys/class/net/$iface/statistics/tx_bytes)"
+
+sleep 2
+
+rx2="$(cat /sys/class/net/$iface/statistics/rx_bytes)"
+tx2="$(cat /sys/class/net/$iface/statistics/tx_bytes)"
+
+rrx="$((($rx2-$rx1)/1000))"
+rtx="$((($tx2-$tx1)/1000))"
+echo "⬇:$(printf '%4d' $rrx)" "⬆:$(printf '%4d' $rtx)"
+
+
+
