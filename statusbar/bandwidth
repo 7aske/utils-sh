@@ -1,18 +1,16 @@
 #!/usr/bin/env sh
 
-iface="$(ip link | grep -e BROADCAST | awk '{print $2}' | cut -d ':' -f1)"
+iface="$(ip link | grep -e "BROADCAST.*default" | grep -v "vbox" | awk '{print $2}' | cut -d ':' -f1)"
 
-rx1="$(cat /sys/class/net/$iface/statistics/rx_bytes)"
-tx1="$(cat /sys/class/net/$iface/statistics/tx_bytes)"
+RX="$(cat /sys/class/net/"$iface"/statistics/rx_bytes)"
+TX="$(cat /sys/class/net/"$iface"/statistics/tx_bytes)"
 
 sleep 2
 
-rx2="$(cat /sys/class/net/$iface/statistics/rx_bytes)"
-tx2="$(cat /sys/class/net/$iface/statistics/tx_bytes)"
+RX2="$(cat /sys/class/net/"$iface"/statistics/rx_bytes)"
+TX2="$(cat /sys/class/net/"$iface"/statistics/tx_bytes)"
 
-rrx="$((($rx2-$rx1)/1000))"
-rtx="$((($tx2-$tx1)/1000))"
-echo "⬇:$(printf '%4d' $rrx)" "⬆:$(printf '%4d' $rtx)"
+RRX="$((("$RX2" - "$RX") / 1000))"
+RTX="$((("$TX2" - "$TX") / 1000))"
 
-
-
+echo "⬇:$(printf '%5dk' $RRX)" "⬆:$(printf '%5dk' $RTX)"
