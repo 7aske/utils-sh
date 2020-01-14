@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+export CODE=~/Code
+
+case $BLOCK_BUTTON in
+    1) notify-send "Repositories" "$(cgs)" ;;
+    2) notify-send "Repositories" "$(cgs -ll)" ;;
+    3) notify-send "Repositories" "$(cgs -l)" ;;
+esac
+
+/usr/bin/cgs | wc -l
+
