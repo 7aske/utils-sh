@@ -12,7 +12,7 @@ do
     then
         if [ "${#sinks[@]}" == "$index" ]
         then
-            pactl set-default-sink "$(echo ${sinks[0]} | cut -d ':' -f2)"
+            pactl set-default-sink "$(echo "${sinks[0]}" | cut -d ':' -f2)"
             notify-send 'Default Audio Device' "${names[0]}" -t 1500
         else
             pactl set-default-sink "$(echo "${sinks[$index]}" | cut -d ':' -f2)"

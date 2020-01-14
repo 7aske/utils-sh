@@ -15,7 +15,7 @@ done
 
 declare reply
 
-if ! [ -z "$1" ]; then
+if [ -n "$1" ]; then
     reply=$1
 else
     printf "%s" "Select the device: "

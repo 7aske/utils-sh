@@ -12,7 +12,7 @@ sleep $SLP
 RX2="$(cat /sys/class/net/"$iface"/statistics/rx_bytes)"
 TX2="$(cat /sys/class/net/"$iface"/statistics/tx_bytes)"
 
-RRX="$((("$RX2" - "$RX") / 1000 / $SLP))"
-RTX="$((("$TX2" - "$TX") / 1000 / $SLP))"
+RRX="$((("$RX2" - "$RX") / 1000 / SLP))"
+RTX="$((("$TX2" - "$TX") / 1000 / SLP))"
 
 echo "⬇:$(printf '%5dk' $RRX)" "⬆:$(printf '%5dk' $RTX)"

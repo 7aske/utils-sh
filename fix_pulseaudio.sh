@@ -3,5 +3,5 @@
 pkill pulseaudio
 pkill pa-applet
 
-pulseaudio -D &> /dev/null
-(pa-applet &) &> /dev/null
+pulseaudio -D >/dev/null 2>&1
+(pa-applet &) >/dev/null 2>&1

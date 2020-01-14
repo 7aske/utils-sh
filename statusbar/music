@@ -1,11 +1,18 @@
 #!/usr/bin/env sh
+
 player="--player=spotify"
 status="$(playerctl $player status)"
 
+case $BLOCK_BUTTON in
+    1) playerctl next $player ;;
+    2) playerctl play-pause $player ;;
+    3) playerctl prev $player ;;
+esac
 
-if [ "$status" == "Playing" ]; then
+
+if [ "$status" = "Playing" ]; then
     printf "🎵%s\n" "$(playerctl $player metadata title | cut -c -30)"
 else
-    echo ""
+    printf "🎵%s\n" "$(playerctl $player metadata title | cut -c -30)"
 fi
 

@@ -23,10 +23,10 @@ do
                 if [ "${#sinks[@]}" == "$index" ]
                 then
                     notify-send "Switched Audio Output" "$wname -> ${names[0]}" -t 1500
-                    pacmd move-sink-input "${indices[$i]}" "$(echo ${sinks[0]} | cut -d ':' -f2)"
+                    pacmd move-sink-input "${indices[$i]}" "$(echo "${sinks[0]}" | cut -d ':' -f2)"
                 else
                     notify-send "Switched Audio Output" "$wname -> ${names[$index]}" -t 1500
-                    pacmd move-sink-input "${indices[$i]}" "$(echo ${sinks[$index]} | cut -d ':' -f2)"
+                    pacmd move-sink-input "${indices[$i]}" "$(echo "${sinks[$index]}" | cut -d ':' -f2)"
                 fi
             fi
         done
