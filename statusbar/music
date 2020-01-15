@@ -1,18 +1,32 @@
 #!/usr/bin/env sh
 
-player="--player=spotify"
-status="$(playerctl $player status)"
-
-case $BLOCK_BUTTON in
-    1) playerctl next $player ;;
-    2) playerctl play-pause $player ;;
-    3) playerctl prev $player ;;
-esac
-
-
-if [ "$status" = "Playing" ]; then
-    printf "🎵%s\n" "$(playerctl $player metadata title | cut -c -30)"
+if [ -n "$1" ]; then
+    player="$1"
 else
-    printf "🎵%s\n" "$(playerctl $player metadata title | cut -c -30)"
+    # default player
+    player="spotify"
 fi
 
+player_arg="--player=$player"
+player_status="$(playerctl "$player_arg" status 2>&1)"
+
+case $BLOCK_BUTTON in
+1)
+    playerctl next "$player_arg"
+    notify-send "$player" "Next song"
+    ;;
+2)
+    playerctl play-pause "$player_arg"
+    notify-send "$player" "Toggled"
+    ;;
+3)
+    playerctl previous "$player_arg"
+    notify-send "$player" "Prev song"
+    ;;
+esac
+
+if [ "$player_status" = "Playing" ] || [ "$player_status" = "Paused" ] || [ "$player_status" = "Stopped" ]; then
+    printf "🎵%s\n" "$(playerctl "$player_arg" metadata title | cut -c -30)"
+else
+    echo "🎵"
+fi
