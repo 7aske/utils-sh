@@ -5,9 +5,10 @@ repos=(sh/utils-sh sh/dotfiles sh/bashrc sh/autosetup uni)
 
 if [ "$1" == "-A" ]; then
     for lang in $(dir "$CODE"); do
+        grep "$lang" "$CODE"/.codeignore && continue
         d="$CODE/$lang"
-        # echo $d
         for repo in $(dir "$d"); do
+            echo "$repo"
             git -C "$d"/"$repo" pull 2> /dev/null | while read OUTPUT; do notify-send "$repo" "$OUTPUT" || echo "$repo" "$OUTPUT"; done &
         done
     done
