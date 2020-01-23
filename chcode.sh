@@ -1,13 +1,15 @@
-lvl1="$(dir -1 -d $CODE/* 2> /dev/null | sort | fzf --reverse --cycle)"
-declare lvl2
-if [ ! -z "$lvl1" ]; then
-    lvl2="$(dir -1 -d $lvl1/* 2> /dev/null | sort | fzf --reverse --cycle)"
+#!/usr/bin/env sh
+
+lvl1="$(dir -1 -d "$CODE"/* 2> /dev/null | sort | fzf --reverse --cycle)"
+set lvl2
+if [ -n "$lvl1" ]; then
+    lvl2="$(dir -1 -d "$lvl1"/* 2> /dev/null | sort | fzf --reverse --cycle)"
     if [ -z "$lvl2" ]; then
-        echo $lvl1
+        echo "$lvl1"
     else
-        echo $lvl2
+        echo "$lvl2"
     fi
 else
-    echo $CODE
+    echo "$CODE"
 fi
 

@@ -1,8 +1,9 @@
 #!/usr/bin/env sh
 
 repo=$1
-declare src
-declare dest
+
+set src
+set dest
 
 if [ "$2" = "-s" ]; then
 	src="$3":"$CODE"/"$repo"
