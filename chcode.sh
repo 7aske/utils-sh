@@ -1,7 +1,7 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 lvl1="$(dir -1 -d "$CODE"/* 2> /dev/null | sort | fzf --reverse --cycle)"
-set lvl2
+declare lvl2
 if [ -n "$lvl1" ]; then
     lvl2="$(dir -1 -d "$lvl1"/* 2> /dev/null | sort | fzf --reverse --cycle)"
     if [ -z "$lvl2" ]; then
