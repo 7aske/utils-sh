@@ -1,32 +1,41 @@
 #!/usr/bin/env bash
 
-git --version >/dev/null || exit 1
-repos=(sh/utils-sh sh/dotfiles sh/bashrc sh/autosetup uni)
+[ ! -x "$(command -v git)" ] && echo -e "\e[1;31mgit: command not found\e[0m" && exit 1
+[ -z "$CODE" ] && echo -e "\e[1;31m'CODE' env variable not set\e[0m" && exit 1
+REPOS=("sh/utils-sh" "sh/dotfiles sh/bashrc" "sh/autosetup uni")
+
+usage() {
+    echo "pullall.sh [options]"
+    echo "options:"
+    echo "  -A      pull all repos from 'CODE'"
+}
+
+git_pull() {
+    echo -e "\e[32m$1\e[0m"
+    [ ! -d "$CODE/$1/.git" ] && echo "$1: not a git repository" && return
+    git -C "$CODE/$1" pull 2>/dev/null | while read -r OUTPUT; do
+        if command -v "notify-send" 1>/dev/null; then
+            notify-send "$1" "$OUTPUT"
+        else
+            echo "$1" "$OUTPUT"
+        fi
+    done &
+}
 
 if [ "$1" == "-A" ]; then
-    for lang in $(dir "$CODE"); do
-        grep "$lang" "$CODE"/.codeignore && continue
-        d="$CODE/$lang"
-        for repo in $(dir "$d"); do
-            echo "$repo"
-            git -C "$d"/"$repo" pull 2>/dev/null | while read -r OUTPUT; do
-                if command -v "notify-send" 1>/dev/null; then
-                    notify-send "$repo" "$OUTPUT"
-                else
-                    echo "$repo" "$OUTPUT"
-                fi
-            done &
+    for LANG in $(dir "$CODE"); do
+        if grep -q "$LANG" "$CODE/.codeignore"; then continue; fi
+        d="$CODE/$LANG"
+        [ -d "$d/.git" ] && continue
+        for REPO in $(dir "$d"); do
+            git_pull "$LANG/$REPO"
         done
     done
 elif [ -z "$1" ]; then
-    for repo in "${repos[@]}"; do
-        echo "$repo" &&
-            git -C "$CODE"/"$repo" pull 2>/dev/null | while read -r OUTPUT; do
-                if command -v "notify-send" 1>/dev/null; then
-                    notify-send "$repo" "$OUTPUT"
-                else
-                    echo "$repo" "$OUTPUT"
-                fi
-            done &
+    for REPO in "${REPOS[@]}"; do
+        git_pull "$REPO"
     done
+else
+    usage
+    exit 1
 fi
