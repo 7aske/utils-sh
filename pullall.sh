@@ -2,7 +2,7 @@
 
 [ ! -x "$(command -v git)" ] && echo -e "\e[1;31mgit: command not found\e[0m" && exit 1
 [ -z "$CODE" ] && echo -e "\e[1;31m'CODE' env variable not set\e[0m" && exit 1
-REPOS=("sh/utils-sh" "sh/dotfiles sh/bashrc" "sh/autosetup uni")
+REPOS=("sh/utils-sh" "sh/dotfiles" "sh/bashrc" "sh/autosetup" "uni")
 
 usage() {
     echo "pullall.sh [options]"
@@ -33,7 +33,9 @@ if [ "$1" == "-A" ]; then
     done
 elif [ -z "$1" ]; then
     for REPO in "${REPOS[@]}"; do
-        git_pull "$REPO"
+        if [ -d "$CODE/$REPO" ]; then
+            git_pull "$REPO"
+        fi
     done
 else
     usage
