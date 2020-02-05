@@ -1,32 +1,45 @@
 #!/usr/bin/env sh
 
 if [ -n "$1" ]; then
-    player="$1"
-else
+    PLAYER="$1"
+elif [ -z "$PLAYER" ]; then
     # default player
-    player="spotify"
+    PLAYER="spotify"
 fi
 
-player_arg="--player=$player"
-player_status="$(playerctl "$player_arg" status 2>&1)"
+PLAYER_ARG="--player=$PLAYER"
+PLAYER_STATUS="$(playerctl "$PLAYER_ARG" status 2>&1)"
+
+if [ "$PLAYER_STATUS" = "No players found" ] && [ -n "$BLOCK_BUTTON" ]; then
+        notify-send "$PLAYER" "starting"
+        i3-msg "exec --no-startup-id $PLAYER" 2>&1>/dev/null
+fi
 
 case $BLOCK_BUTTON in
 1)
-    playerctl next "$player_arg"
-    notify-send "$player" "Next song"
+    playerctl next "$PLAYER_ARG"
+    notify-send "$PLAYER" "next song"
     ;;
 2)
-    playerctl play-pause "$player_arg"
-    notify-send "$player" "Toggled"
+    playerctl play-pause "$PLAYER_ARG" && notify-send "$PLAYER" "$(playerctl "$PLAYER_ARG" status 2>&1)"
     ;;
 3)
-    playerctl previous "$player_arg"
-    notify-send "$player" "Prev song"
+    playerctl previous "$PLAYER_ARG"
+    notify-send "$PLAYER" "prev song"
     ;;
 esac
 
-if [ "$player_status" = "Playing" ] || [ "$player_status" = "Paused" ] || [ "$player_status" = "Stopped" ]; then
-    printf "🎵%s\n" "$(playerctl "$player_arg" metadata title | cut -c -30)"
-else
+case "$PLAYER_STATUS" in
+"Playing")
+    printf "🎵%s\n" "$(playerctl "$PLAYER_ARG" metadata title | cut -c -30)"
+    ;;
+"No players found")
     echo "🎵"
-fi
+    ;;
+"Stopped")
+    echo "🎵"
+    ;;
+"Paused")
+    printf "🔲%s\n" "$(playerctl "$PLAYER_ARG" metadata title | cut -c -30)"
+    ;;
+esac
