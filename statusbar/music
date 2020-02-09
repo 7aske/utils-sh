@@ -11,8 +11,8 @@ PLAYER_ARG="--player=$PLAYER"
 PLAYER_STATUS="$(playerctl "$PLAYER_ARG" status 2>&1)"
 
 if [ "$PLAYER_STATUS" = "No players found" ] && [ -n "$BLOCK_BUTTON" ]; then
-        notify-send "$PLAYER" "starting"
-        i3-msg "exec --no-startup-id $PLAYER" 2>&1>/dev/null
+    notify-send "$PLAYER" "starting"
+    i3-msg "exec --no-startup-id $PLAYER" >/dev/null2 >&1z
 fi
 
 case $BLOCK_BUTTON in
@@ -31,15 +31,15 @@ esac
 
 case "$PLAYER_STATUS" in
 "Playing")
-    printf "🎵%s\n" "$(playerctl "$PLAYER_ARG" metadata title | cut -c -30)"
+    printf "🎵 %s\n" "$(playerctl "$PLAYER_ARG" metadata title | cut -c -30)"
     ;;
 "No players found")
-    echo "🎵"
+    echo "🎵 "
     ;;
 "Stopped")
-    echo "🎵"
+    echo "🎵 "
     ;;
 "Paused")
-    printf "🔲%s\n" "$(playerctl "$PLAYER_ARG" metadata title | cut -c -30)"
+    printf "🔲 %s\n" "$(playerctl "$PLAYER_ARG" metadata title | cut -c -30)"
     ;;
 esac
