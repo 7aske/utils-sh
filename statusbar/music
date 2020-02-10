@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+. "$HOME/.profile"
+
 if [ -n "$1" ]; then
     PLAYER="$1"
 elif [ -z "$PLAYER" ]; then
@@ -12,7 +14,7 @@ PLAYER_STATUS="$(playerctl "$PLAYER_ARG" status 2>&1)"
 
 if [ "$PLAYER_STATUS" = "No players found" ] && [ -n "$BLOCK_BUTTON" ]; then
     notify-send "$PLAYER" "starting"
-    i3-msg "exec --no-startup-id $PLAYER" >/dev/null2 >&1z
+    i3-msg "exec --no-startup-id $PLAYER" >/dev/null 2>&1
 fi
 
 case $BLOCK_BUTTON in
