@@ -34,7 +34,13 @@ if [ -n "$PROJ" ]; then
         fi
         $CMD "$PROJ"
         ;;
-    *)
+    "jetbrains") 
+        BIN_DIR="$HOME/.local/bin" 
+        CMD=$(for file in $(dir -1 "$BIN_DIR"); do grep -q "JetBrains" "$BIN_DIR/$file" && echo "$BIN_DIR/$file"; done | rofi -dmenu)
+        [ -z "$CMD" ] && exit 1
+        $CMD "$PROJ"
+    ;;
+        *)
         echo "'TYPE' env not set"
         exit 1
         ;;
