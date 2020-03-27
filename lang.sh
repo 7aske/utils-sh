@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
-langs="us\nrs-lat\nrs"
+quick_layouts="us\nrs"
 
-lang=$(echo -e $langs | dmenu)
+layout="$(cat <(echo -e $quick_layouts) <(localectl list-x11-keymap-layouts --no-pager) | dmenu -p "layout:")"
 
-case $lang in
-    rs)
-        setxkbmap -layout rs;;
-    rs-lat)
-        setxkbmap -layout rs -variant latin;;
-    us)
-        setxkbmap -layout us;;
-esac
+if [ -n "$layout" ]; then
+    variant="$(cat <(echo -e " ") <(localectl list-x11-keymap-variants "$layout") | dmenu -p "$layout:")"
+    if [ -n "$variant" ] && [ "$variant" != " " ]; then
+        setxkbmap -layout "$layout" -variant "$variant"
+    else
+        setxkbmap -layout "$layout"
+    fi
+fi
