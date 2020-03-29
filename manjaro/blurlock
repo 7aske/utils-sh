@@ -9,8 +9,7 @@ convert /tmp/screenshot.png -blur 0x5 /tmp/screenshotblur.png
 rm /tmp/screenshot.png
 
 # lock the screen
-i3lock -i /tmp/screenshotblur.png
-
+betterlockscreen -u /tmp/screenshotblur.png -l dimblur -t locked 
 # sleep 1 adds a small delay to prevent possible race conditions with suspend
 sleep 1
 
